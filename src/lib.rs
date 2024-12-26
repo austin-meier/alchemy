@@ -1,2 +1,4 @@
+#[allow(non_camel_case_types)]
+
 pub mod ingredient;
-pub mod alchemy_document;
+pub mod alchemy;

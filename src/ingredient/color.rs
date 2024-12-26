@@ -5,6 +5,10 @@ pub trait Colorant {
     fn as_cmyk(&self) -> CMYKColor;
 }
 
+pub trait Colorable {
+    fn colors(&self) -> Vec<impl Colorant>;
+}
+
 #[derive(Copy, Clone, Debug)]
 pub struct RGBColor {
     pub r: u8,
@@ -86,7 +90,6 @@ impl Default for CMYKColor {
         CMYKColor{c: 0, m: 0, y: 0, k: 0}
     }
 }
-
 
 pub enum ColorSpace {
     Unknown,
