@@ -1,6 +1,4 @@
-use url::Url;
-
-#[derive(Debug)]
+#[derive(Debug, serde::Deserialize)]
 pub struct ImageIngredient {
-  pub src: Url
+  pub src: String
 }
