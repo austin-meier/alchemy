@@ -1,3 +1,3 @@
 pub trait Identifyable {
-  fn uuid() -> String;
+  fn uuid(&self) -> &str;
 }

@@ -9,7 +9,7 @@ pub struct AlchemyDocument {
 
 	/* Pages is a 2d array of pages in order of appearance. Each page vector is an
        array of uuid ingredient identifies in their respective order*/
-  	pub pages: Vec<Vec<String>>,
+  pub pages: Vec<Vec<String>>,
 
 	pub ingredients: HashMap<String, Ingredient>
 }
