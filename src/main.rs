@@ -9,10 +9,10 @@ fn main() -> Result<(), Box<dyn Error>> {
   let alchemy_doc = include_str!("../resources/documents/text_image.json");
 
   let doc: AlchemyDocument = serde_json::from_str(&alchemy_doc)?;
-  //println!("{:?}", doc);
+  println!("{:?}", doc);
   //let _ = doc.to_pdf(Path::new("../")).unwrap();
 
-  println!("{:?}", doc.get_cutline_for_page(0));
+  //println!("{:?}", doc.get_dielines_for_page(1).unwrap().len());
   return Ok(())
 }
 

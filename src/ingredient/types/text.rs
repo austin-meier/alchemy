@@ -1,5 +1,6 @@
-use crate::ingredient::traits::{dimension::{Dimension, DimensionUnit, Dimensionable}, id::Identifyable};
-use super::base::{IngredientFrame, Layer, parse_layer};
+use crate::ingredient::traits::{dimension::{Dimension, Dimensionable}, id::Identifyable};
+use crate::ingredient::helpers::{layer::Layer, deserializers::parse_layer};
+use super::base::IngredientFrame;
 
 #[derive(Debug, serde::Deserialize)]
 pub struct TextIngredient {
@@ -21,10 +22,10 @@ impl Identifyable for TextIngredient {
 
 impl Dimensionable for TextIngredient {
   fn height(&self) -> Dimension {
-    Dimension::new(self.frame.height, DimensionUnit::Inch)
+    self.frame.height()
   }
 
   fn width(&self) -> Dimension {
-    Dimension::new(self.frame.width, DimensionUnit::Inch)
+    self.frame.width()
   }
 }

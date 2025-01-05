@@ -1,8 +1,5 @@
-use serde::{Deserialize, Deserializer};
-
 use crate::ingredient::traits::{dimension::{Dimension, DimensionUnit, Dimensionable}, position::Positionable};
-
-use super::{image::ImageIngredient, text::TextIngredient, shape::ShapeIngredient};
+use super::{image::ImageIngredient, shape::ShapeIngredient, text::TextIngredient, rectangle::RectangleIngredient};
 
 #[derive(serde::Deserialize, Debug)]
 #[serde(tag = "type")]
@@ -17,20 +14,14 @@ pub enum Ingredient {
     #[serde(alias = "volatileImage")]
     Image(ImageIngredient),
 
-    #[serde(alias = "shape", alias = "fill", alias = "rectangle")]
+    #[serde(alias = "shape")]
     Shape(ShapeIngredient),
+
+    #[serde(alias = "rectangle", alias = "fill")]
+    Rectangle(RectangleIngredient),
 
     #[serde(alias = "data")]
     Data
-}
-
-#[derive(Debug)]
-pub enum Layer {
-    None,
-    Print,
-    Mask,
-    Bleed,
-    Background,
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -39,6 +30,28 @@ pub struct IngredientFrame {
     pub y: f64,
     pub width: f64,
     pub height: f64,
+}
+
+impl Dimensionable for Ingredient {
+    fn height(&self) -> Dimension {
+        match self {
+            Ingredient::Rectangle(rect) => rect.height(),
+            Ingredient::Image(image) => image.height(),
+            Ingredient::Shape(shape) => shape.height(),
+            Ingredient::Text(text) => text.height(),
+            _ => Dimension::new(0.0, DimensionUnit::Inch)
+        }
+    }
+
+    fn width(&self) -> Dimension {
+        match self {
+            Ingredient::Rectangle(rect) => rect.width(),
+            Ingredient::Image(image) => image.width(),
+            Ingredient::Shape(shape) => shape.width(),
+            Ingredient::Text(text) => text.width(),
+            _ => Dimension::new(0.0, DimensionUnit::Inch)
+        }
+    }
 }
 
 impl Dimensionable for IngredientFrame {
@@ -59,18 +72,4 @@ impl Positionable for IngredientFrame {
     fn get_y(&self) -> Dimension {
         Dimension::new(self.y, DimensionUnit::Inch)
     }
-}
-
-pub fn parse_layer<'de, D>(d: D) -> Result<Layer, D::Error> where D: Deserializer<'de> {
-    Deserialize::deserialize(d)
-        .map(|layer: Option<_>| {
-            let layer_name = layer.unwrap_or("none");
-            match layer_name {
-                "background" => Layer::Background,
-                "bleed" => Layer::Bleed,
-                "print" => Layer::Print,
-                "mask" => Layer::Mask,
-                _ => Layer::None
-            }
-        })
 }

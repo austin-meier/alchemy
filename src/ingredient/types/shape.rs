@@ -1,13 +1,6 @@
-use crate::ingredient::traits::{dimension::{Dimension, DimensionUnit, Dimensionable}, id::Identifyable};
-use super::base::{IngredientFrame, Layer, parse_layer};
-
-
-#[derive(Debug, serde::Deserialize)]
-pub struct StrokeColor {
-  pub name: String,
-  pub hex: String,
-  pub id: String,
-}
+use crate::ingredient::{helpers::paths::Path, traits::{dimension::{Dimension, Dimensionable}, id::Identifyable, stroke::StrokeColor}};
+use crate::ingredient::helpers::{layer::Layer, deserializers::parse_layer};
+use super::base::IngredientFrame;
 
 #[derive(Debug, serde::Deserialize)]
 pub struct ShapeIngredient {
@@ -19,6 +12,8 @@ pub struct ShapeIngredient {
 
   #[serde(alias = "rect")]
   pub frame: IngredientFrame,
+
+  pub paths: Vec<Path>,
 
   #[serde(alias = "strokeColor")]
   pub stroke_color: Option<StrokeColor>,
@@ -32,10 +27,10 @@ impl Identifyable for ShapeIngredient {
 
 impl Dimensionable for ShapeIngredient {
   fn height(&self) -> Dimension {
-    Dimension::new(self.frame.height, DimensionUnit::Inch)
+    self.frame.height()
   }
 
   fn width(&self) -> Dimension {
-    Dimension::new(self.frame.width, DimensionUnit::Inch)
+    self.frame.width()
   }
 }
