@@ -17,12 +17,14 @@ pub struct Rectangle {
 
 impl Rectangle {
     pub fn new() -> Self {
-        Rectangle { width: Dimension(0.0), height: Dimension(0.0) }
+        Rectangle {
+            width: Dimension(0.0),
+            height: Dimension(0.0),
+        }
     }
 }
 
 impl Dimensionable for Rectangle {
-
     fn height(&self) -> Dimension {
         self.height
     }
@@ -37,13 +39,13 @@ impl Dimensionable for Rectangle {
 #[derive(Copy, Clone, PartialEq, PartialOrd)]
 pub struct Dimension(f64);
 
-#[derive(Copy,Clone)]
+#[derive(Copy, Clone)]
 pub enum DimensionUnit {
     Inch,
     Point,
     Centimeter,
     Meter,
-    Millimeter
+    Millimeter,
 }
 
 impl DimensionUnit {
@@ -53,13 +55,13 @@ impl DimensionUnit {
             Self::Point => 0.0138889,
             Self::Centimeter => 0.393701,
             Self::Meter => 39.3701,
-            Self::Millimeter => 0.0393701
+            Self::Millimeter => 0.0393701,
         }
     }
 }
 
 impl Dimension {
-    pub fn new(value: f64, unit: DimensionUnit)-> Self {
+    pub fn new(value: f64, unit: DimensionUnit) -> Self {
         Dimension(value * unit.in_inches())
     }
 
@@ -68,7 +70,7 @@ impl Dimension {
     }
 
     pub fn from_pixels(pixels: f64, dpi: f64) -> Self {
-      Dimension(pixels/dpi)
+        Dimension(pixels / dpi)
     }
 
     pub fn as_pixels(value: f64, unit: DimensionUnit, dpi: f64) -> f64 {
@@ -76,9 +78,8 @@ impl Dimension {
     }
 
     pub fn multiply(&self, dim: Dimension) -> Dimension {
-       Dimension(self.0 * dim.as_unit(DimensionUnit::Inch))
+        Dimension(self.0 * dim.as_unit(DimensionUnit::Inch))
     }
-
 }
 
 /* Used for operator overloading the * operator */
@@ -97,8 +98,7 @@ impl Display for Dimension {
 }
 
 impl From<Dimension> for Mm {
-   fn from(value: Dimension) -> Self {
-       Mm(value.as_unit(DimensionUnit::Millimeter) as f32)
-   }
+    fn from(value: Dimension) -> Self {
+        Mm(value.as_unit(DimensionUnit::Millimeter) as f32)
+    }
 }
-

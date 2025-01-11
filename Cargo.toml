@@ -5,8 +5,8 @@ edition = "2021"
 
 [dependencies]
 image = "0.25.5"
-printpdf = "0.7.0"
 serde = { version = "1.0.216", features = ["derive"] }
 serde_json = "1.0.133"
 url = "2.5.4"
 uuid = { version = "1.11.0", features = ["v4", "fast-rng", "macro-diagnostics"] }
+printpdf = {path = "printpdf"}

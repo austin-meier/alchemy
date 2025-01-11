@@ -1,0 +1,3 @@
+[submodule "src/printpdf"]
+	path = printpdf
+	url = git@github.com:fschutt/printpdf.git

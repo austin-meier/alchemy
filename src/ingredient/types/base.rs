@@ -1,5 +1,12 @@
-use crate::ingredient::traits::{dimension::{Dimension, DimensionUnit, Dimensionable}, id::Identifyable, position::Positionable};
-use super::{image::ImageIngredient, shape::ShapeIngredient, text::TextIngredient, rectangle::RectangleIngredient};
+use super::{
+    image::ImageIngredient, rectangle::RectangleIngredient, shape::ShapeIngredient,
+    text::TextIngredient,
+};
+use crate::ingredient::traits::{
+    dimension::{Dimension, DimensionUnit, Dimensionable},
+    id::Identifyable,
+    position::Positionable,
+};
 
 #[derive(serde::Deserialize, Debug)]
 #[serde(tag = "type")]
@@ -19,7 +26,7 @@ pub enum Ingredient {
     Rectangle(RectangleIngredient),
 
     #[serde(alias = "data")]
-    Data
+    Data,
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -37,7 +44,7 @@ impl Dimensionable for Ingredient {
             Ingredient::Image(image) => image.height(),
             Ingredient::Shape(shape) => shape.height(),
             Ingredient::Text(text) => text.height(),
-            _ => Dimension::new(0.0, DimensionUnit::Inch)
+            _ => Dimension::new(0.0, DimensionUnit::Inch),
         }
     }
 
@@ -47,11 +54,10 @@ impl Dimensionable for Ingredient {
             Ingredient::Image(image) => image.width(),
             Ingredient::Shape(shape) => shape.width(),
             Ingredient::Text(text) => text.width(),
-            _ => Dimension::new(0.0, DimensionUnit::Inch)
+            _ => Dimension::new(0.0, DimensionUnit::Inch),
         }
     }
 }
-
 
 impl Identifyable for Ingredient {
     fn uuid(&self) -> &str {
@@ -60,19 +66,19 @@ impl Identifyable for Ingredient {
             Ingredient::Image(image) => image.uuid(),
             Ingredient::Shape(shape) => shape.uuid(),
             Ingredient::Text(text) => text.uuid(),
-            _ => ""
+            _ => "",
         }
     }
 }
 
 impl Dimensionable for IngredientFrame {
-  fn height(&self) -> Dimension {
-    Dimension::new(self.height, DimensionUnit::Inch)
-  }
+    fn height(&self) -> Dimension {
+        Dimension::new(self.height, DimensionUnit::Inch)
+    }
 
-  fn width(&self) -> Dimension {
-    Dimension::new(self.width, DimensionUnit::Inch)
-  }
+    fn width(&self) -> Dimension {
+        Dimension::new(self.width, DimensionUnit::Inch)
+    }
 }
 
 impl Positionable for IngredientFrame {

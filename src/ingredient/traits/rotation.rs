@@ -1,3 +1,3 @@
 pub trait Rotatable {
-  fn rotation() -> u16;
+    fn rotation() -> u16;
 }
