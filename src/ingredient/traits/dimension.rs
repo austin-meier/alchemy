@@ -1,30 +1,26 @@
 use std::{fmt::Display, ops::Mul};
-use crate::ingredient::types::base::Ingredient;
 
 pub trait Dimensionable {
     fn width(&self) -> Dimension;
     fn height(&self) -> Dimension;
+    fn area(&self) -> Dimension {
+        self.width() * self.height()
+    }
 }
 
 pub struct Rectangle {
-    width: Dimension,
-    height: Dimension
+    pub width: Dimension,
+    pub height: Dimension,
 }
 
 impl Rectangle {
     pub fn new() -> Self {
-        Rectangle {
-            width: Dimension::new(0.0, DimensionUnit::Inch),
-            height: Dimension::new(0.0, DimensionUnit::Inch)
-        }
-    }
-
-    pub fn area(&self) -> Dimension {
-        self.height * self.width
+        Rectangle { width: Dimension(0.0), height: Dimension(0.0) }
     }
 }
 
 impl Dimensionable for Rectangle {
+
     fn height(&self) -> Dimension {
         self.height
     }
@@ -34,46 +30,9 @@ impl Dimensionable for Rectangle {
     }
 }
 
-impl From<&Ingredient> for Rectangle {
-    fn from(frame: &Ingredient) -> Self {
-        match frame {
-            Ingredient::Image(image) => {
-                Rectangle {
-                    width: image.frame.width(),
-                    height: image.frame.height()
-                }
-            },
-
-            Ingredient::Text(text) => {
-                Rectangle {
-                    width: text.frame.width(),
-                    height: text.frame.height()
-                }
-            },
-
-            Ingredient::Shape(shape) => {
-                Rectangle {
-                    width: shape.frame.width(),
-                    height: shape.frame.height()
-                }
-            },
-
-            _ => {
-                Rectangle::new()
-            }
-
-        }
-    }
-}
-
-impl Display for Rectangle {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{} in. x {} in.", self.width, self.height)
-    }
-}
 // Base dimension unit will be inches since it makes for the easiest conversion
 // to Point. Most common for PDF format
-#[derive(Copy,Clone, PartialEq, PartialOrd)]
+#[derive(Copy, Clone, PartialEq, PartialOrd)]
 pub struct Dimension(f64);
 
 #[derive(Copy,Clone)]
@@ -126,6 +85,7 @@ impl Mul for Dimension {
         self.multiply(rhs)
     }
 }
+
 
 impl Display for Dimension {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {

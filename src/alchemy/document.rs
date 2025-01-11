@@ -1,5 +1,5 @@
-use std::collections::HashMap;
-use crate::ingredient::{traits::dimension::Rectangle, types::{base::Ingredient, shape::ShapeIngredient}};
+use std::{cmp::Ordering, collections::HashMap};
+use crate::ingredient::{traits::dimension::{Dimensionable, Rectangle}, types::base::Ingredient};
 
 #[derive(serde::Deserialize, Debug)]
 pub struct AlchemyDocument {
@@ -44,17 +44,18 @@ impl AlchemyDocument {
       Some(ingredients)
     }
 
-  pub fn get_biggest_frame(&self) -> Rectangle {
-    self.ingredients.values().fold(
-      Rectangle::new(),
-      |acc, ingredient| {
-        let frame: Rectangle = ingredient.into();
-        if acc.area() <  frame.area(){
-          frame.into()
-        } else {
-          acc
-        }
-      }
-    )
+	pub fn get_ingredients_on_page(&self, page_num: usize) -> Vec<&Ingredient> {
+		self.pages
+			.get(page_num)
+			.unwrap_or(&Vec::new())
+			.iter()
+			.filter_map(|ingredient_id| self.ingredients.get(ingredient_id))
+			.collect()
+	}
+
+  pub fn get_biggest_ingredient(&self) -> Option<&Ingredient> {
+		self.ingredients.values().max_by(|a, b| {
+			a.area().partial_cmp(&b.area()).unwrap_or(Ordering::Less)
+		})
 	}
 }

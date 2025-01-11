@@ -1,11 +1,9 @@
-use crate::ingredient::traits::{dimension::{Dimension, DimensionUnit, Dimensionable}, position::Positionable};
+use crate::ingredient::traits::{dimension::{Dimension, DimensionUnit, Dimensionable}, id::Identifyable, position::Positionable};
 use super::{image::ImageIngredient, shape::ShapeIngredient, text::TextIngredient, rectangle::RectangleIngredient};
 
 #[derive(serde::Deserialize, Debug)]
 #[serde(tag = "type")]
 pub enum Ingredient {
-
-    #[serde(alias = "test")]
     Unknown,
 
     #[serde(alias = "text")]
@@ -50,6 +48,19 @@ impl Dimensionable for Ingredient {
             Ingredient::Shape(shape) => shape.width(),
             Ingredient::Text(text) => text.width(),
             _ => Dimension::new(0.0, DimensionUnit::Inch)
+        }
+    }
+}
+
+
+impl Identifyable for Ingredient {
+    fn uuid(&self) -> &str {
+        match self {
+            Ingredient::Rectangle(rect) => rect.uuid(),
+            Ingredient::Image(image) => image.uuid(),
+            Ingredient::Shape(shape) => shape.uuid(),
+            Ingredient::Text(text) => text.uuid(),
+            _ => ""
         }
     }
 }
