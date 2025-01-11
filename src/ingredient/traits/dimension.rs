@@ -1,5 +1,7 @@
 use std::{fmt::Display, ops::Mul};
 
+use printpdf::Mm;
+
 pub trait Dimensionable {
     fn width(&self) -> Dimension;
     fn height(&self) -> Dimension;
@@ -41,6 +43,7 @@ pub enum DimensionUnit {
     Point,
     Centimeter,
     Meter,
+    Millimeter
 }
 
 impl DimensionUnit {
@@ -50,6 +53,7 @@ impl DimensionUnit {
             Self::Point => 0.0138889,
             Self::Centimeter => 0.393701,
             Self::Meter => 39.3701,
+            Self::Millimeter => 0.0393701
         }
     }
 }
@@ -86,9 +90,15 @@ impl Mul for Dimension {
     }
 }
 
-
 impl Display for Dimension {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{} inches", self.0)
     }
 }
+
+impl From<Dimension> for Mm {
+   fn from(value: Dimension) -> Self {
+       Mm(value.as_unit(DimensionUnit::Millimeter) as f32)
+   }
+}
+

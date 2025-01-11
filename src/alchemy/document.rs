@@ -58,4 +58,5 @@ impl AlchemyDocument {
 			a.area().partial_cmp(&b.area()).unwrap_or(Ordering::Less)
 		})
 	}
+
 }
